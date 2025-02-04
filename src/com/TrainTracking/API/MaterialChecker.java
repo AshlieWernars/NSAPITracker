@@ -1,7 +1,9 @@
 package com.TrainTracking.API;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -59,7 +61,10 @@ public class MaterialChecker {
 		}
 		// The journey is happening
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(folderToStoreTo + "/" + response + ".txt"))) {
+		String safeResponse = response.replaceAll("[/\\\\:*?\"<>|]", "");
+		Path filePath = Paths.get(folderToStoreTo, safeResponse + ".txt");
+
+		try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
 			writer.append(trip.getTripFileContents());
 		} catch (Exception e) {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());

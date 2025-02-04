@@ -1,8 +1,10 @@
 package com.FileIO.FileLoggers;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.Info.DepartureInfo;
 import com.TrainTracking.TrainLogger;
@@ -10,8 +12,10 @@ import com.TrainTracking.TrainLogger;
 public class DepartureInfoLogger {
 
 	public static void writeToFile(DepartureInfo departureInfo) {
-		// File output
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(TrainLogger.getFoldertostore() + "/Info/" + "departureInfo_" + departureInfo.getTrainNumber() + ".txt"))) {
+		String tripNumber = departureInfo.getTrainNumber().replaceAll("[/\\\\:*?\"<>|]", "");
+		Path filePath = Paths.get(TrainLogger.getFoldertostore(), "Info", "departureInfo_" + tripNumber + ".txt");
+
+		try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
 			writer.write("Direction: " + departureInfo.getDirection());
 			writer.newLine();
 			writer.write("Train Number: " + departureInfo.getTrainNumber());
