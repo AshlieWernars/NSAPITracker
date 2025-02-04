@@ -48,7 +48,7 @@ public class TrainLogger extends Thread {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		currentDate = LocalDate.now().format(formatter);
 
-		folderToStoreTo = Info.getSavefilepath() + currentDate;
+		folderToStoreTo = Info.getSavefilepath() + "Tracking/" + currentDate;
 
 		FileCreator.ensureDirectoriesExist(folderToStoreTo + "/hello.txt");
 
