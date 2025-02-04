@@ -1,7 +1,9 @@
 package com.TrainTracking.API;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -59,7 +61,16 @@ public class MaterialChecker {
 		}
 		// The journey is happening
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(folderToStoreTo + "/" + response + ".txt"))) {
+		String safeResponse = response.replaceAll("[/\\\\:*?\"<>|]", "");
+		Path baseDir = Paths.get(folderToStoreTo).toAbsolutePath().normalize();
+		Path filePath = baseDir.resolve(safeResponse + ".txt").normalize();
+
+		// Ensure the filePath is still inside baseDir
+		if (!filePath.startsWith(baseDir)) {
+			throw new SecurityException("Invalid file path detected!");
+		}
+
+		try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
 			writer.append(trip.getTripFileContents());
 		} catch (Exception e) {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());

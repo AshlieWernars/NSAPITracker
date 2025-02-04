@@ -1,9 +1,10 @@
 package com.FileIO.FileLoggers;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 
@@ -15,11 +16,16 @@ public class JourneyInfoLogger {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 	public static void writeToFile(JourneyInfo journeyInfo) {
+		String tripName = getTripName(journeyInfo.getTripNumber()).replaceAll("[/\\\\:*?\"<>|]", "");
+		Path baseDir = Paths.get(TrainLogger.getFoldertostore()).toAbsolutePath().normalize();
+		Path filePath = baseDir.resolve("Journeys").resolve("journeyLog" + tripName + ".txt").normalize();
 
-		File file = new File(TrainLogger.getFoldertostore() + "/Journeys/" + "journeyLog" + getTripName(journeyInfo.getTripNumber()) + ".txt");
+		// Ensure the filePath is still inside baseDir
+		if (!filePath.startsWith(baseDir)) {
+			throw new SecurityException("Invalid file path detected!");
+		}
 
-		// Write information to file
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
 			writer.write("Origin: \n  " + journeyInfo.getOrigin() + "\n");
 
 			if (journeyInfo.getStopsAt() != null) {
