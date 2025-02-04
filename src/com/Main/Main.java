@@ -80,7 +80,7 @@ public class Main extends Canvas {
 			drawMultilineString(g2d, ConsoleCapture.getLastLinesAsString(), 0, 300, fm);
 
 			g2d.drawString("Amount of active material: " + Info.getActiveMaterialCounter(), 325, 280);
-			
+
 			g2d.drawString("Last time updated: " + Info.getLastTimeUpdated(), 525, 280);
 
 			drawActiveMaterial(g2d, Info.getActiveMaterial(), 325, 300, fm);

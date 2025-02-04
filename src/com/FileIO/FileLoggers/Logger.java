@@ -7,10 +7,11 @@ import java.util.Locale;
 
 import com.FileIO.FileCreator;
 import com.FileIO.FileLoader;
+import com.Main.Info;
 
 public class Logger {
 
-	private static final String errorLogFilePath = "res/error.log";
+	private static final String errorLogFilePath = Info.getSavefilepath() + "error.log";
 
 	public static String getCurrentTime() {
 		LocalDateTime now = LocalDateTime.now();

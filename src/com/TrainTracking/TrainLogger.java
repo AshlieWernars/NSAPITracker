@@ -10,6 +10,7 @@ import com.FileIO.FileLoggers.Logger;
 import com.Info.ArrivalInfo;
 import com.Info.DepartureInfo;
 import com.Info.JourneyInfo;
+import com.Main.Info;
 import com.TrainTracking.API.JourneyCreation;
 import com.TrainTracking.API.RequestArrivals;
 import com.TrainTracking.API.RequestDepartures;
@@ -20,7 +21,6 @@ public class TrainLogger extends Thread {
 	// Pre-Defined Vars
 	private static final int SECONDS_IN_MINUTES = 60;
 	private static final ArrayList<String> stationCodes = new ArrayList<>();
-	private static final String locationToStoreTo = "/home/ashlie/Desktop/";
 
 	// Vars
 	private static int checkIntervalInMinutes = 1;
@@ -48,7 +48,7 @@ public class TrainLogger extends Thread {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		currentDate = LocalDate.now().format(formatter);
 
-		folderToStoreTo = locationToStoreTo + currentDate;
+		folderToStoreTo = Info.getSavefilepath() + "Tracking/" + currentDate;
 
 		FileCreator.ensureDirectoriesExist(folderToStoreTo + "/hello.txt");
 

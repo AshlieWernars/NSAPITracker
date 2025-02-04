@@ -27,7 +27,6 @@ public class MaterialLogger extends Thread {
 	private final int checkTime = 8;
 	private final ArrayList<Integer> materialNumbers = new ArrayList<>();
 	private final ArrayList<Integer> activeMaterialNumbers = new ArrayList<>();
-	private final String locationToStoreTo = "/home/ashlie/Desktop/";
 
 	// Vars
 	private int checkIntervalInMinutes = 10 - checkTime;
@@ -60,7 +59,7 @@ public class MaterialLogger extends Thread {
 	private void loadAllTrainNumbers() {
 		materialNumbers.clear();
 
-		try (BufferedReader reader = new BufferedReader(new FileReader("/home/ashlie/Desktop/Ashlie/Trains/alleTreinen.txt"))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(Info.getSavefilepath() + "alleTreinen.txt"))) {
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				materialNumbers.add(Integer.valueOf(line.trim()));
@@ -75,7 +74,7 @@ public class MaterialLogger extends Thread {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		currentDate = LocalDate.now().format(formatter);
 
-		folderToStoreTo = locationToStoreTo + currentDate + "/MaterialTracking/";
+		folderToStoreTo = Info.getSavefilepath() + "Tracking/" + currentDate + "/MaterialTracking/";
 
 		FileCreator.ensureDirectoriesExist(folderToStoreTo + "/hello.txt");
 

@@ -33,7 +33,7 @@ public class DisruptionLogger extends Thread {
 	private boolean shouldRun = true;
 
 	public DisruptionLogger() {
-		FileCreator.ensureDirectoriesExist("/home/ashlie/Desktop/DisruptionAI/Disruptions/hello.txt");
+		FileCreator.ensureDirectoriesExist(Info.getSavefilepath() + "Disruptions/" + "hello.txt");
 
 		System.out.println("Checking for disruptions every: " + checkIntervalInMinutes + " Minute(s).");
 	}
@@ -68,29 +68,29 @@ public class DisruptionLogger extends Thread {
 	}
 
 	private ArrayList<Disruption> sortActiveDisruptions() {
-	    ArrayList<Disruption> toSort = new ArrayList<>(trackedDisruptions.values());
+		ArrayList<Disruption> toSort = new ArrayList<>(trackedDisruptions.values());
 
-	    List<Disruption> disruption = new ArrayList<>();
-	    List<Disruption> maintenance = new ArrayList<>();
+		List<Disruption> disruption = new ArrayList<>();
+		List<Disruption> maintenance = new ArrayList<>();
 
-	    for (Disruption d : toSort) {
-	        String id = String.valueOf(d.getID());
-	        if (id.startsWith("6")) {
-	            disruption.add(d);
-	        } else if (id.startsWith("7")) {
-	            maintenance.add(d);
-	        }
-	    }
+		for (Disruption d : toSort) {
+			String id = String.valueOf(d.getID());
+			if (id.startsWith("6")) {
+				disruption.add(d);
+			} else if (id.startsWith("7")) {
+				maintenance.add(d);
+			}
+		}
 
-	    disruption.sort(Comparator.comparingInt(Disruption::getID));
-	    maintenance.sort(Comparator.comparingInt(Disruption::getID));
+		disruption.sort(Comparator.comparingInt(Disruption::getID));
+		maintenance.sort(Comparator.comparingInt(Disruption::getID));
 
-	    toSort.clear();
-	    toSort.addAll(maintenance);
-	    toSort.add(null);
-	    toSort.addAll(disruption);
+		toSort.clear();
+		toSort.addAll(maintenance);
+		toSort.add(null);
+		toSort.addAll(disruption);
 
-	    return toSort;
+		return toSort;
 	}
 
 	public void checkForDisruptions() {
@@ -118,7 +118,7 @@ public class DisruptionLogger extends Thread {
 				trackedDisruptions.put(id, disruption);
 				String disruptionString = String.join(" ", disruption.toStringArray());
 				System.out.println("Disruption started. ID: " + id);
-				FileCreator.createFile("/home/ashlie/Desktop/DisruptionAI/Disruptions/" + id + ".txt", disruptionString);
+				FileCreator.createFile(Info.getSavefilepath() + "Disruptions/" + id + ".txt", disruptionString);
 				updatedDisruptions.add(id);
 			}
 		}
