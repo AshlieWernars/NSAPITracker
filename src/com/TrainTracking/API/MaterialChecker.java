@@ -38,28 +38,9 @@ public class MaterialChecker {
 
 		Trip trip = getTripInfo(Integer.valueOf(response.toString()));
 
-		if (trip == null) {
+		if (trip == null || !isTripCurrentlyHappening(trip)) {
 			return false;
 		}
-
-		if (trip.getTripStartTime().equals("UNKOWN") || trip.getTripEndTime().equals("UNKOWN")) {
-			return false;
-		}
-
-		LocalTime leaveTime = LocalTime.parse(trip.getTripStartTime());
-		LocalTime arrivalTime = LocalTime.parse(trip.getTripEndTime());
-
-		ZonedDateTime plannedLeaveTime = ZonedDateTime.of(LocalDate.now(), leaveTime, ZoneId.systemDefault());
-		ZonedDateTime plannedArrivalTime = ZonedDateTime.of(LocalDate.now(), arrivalTime, ZoneId.systemDefault());
-
-		ZonedDateTime currentTime = ZonedDateTime.now();
-
-		if (currentTime.isAfter(plannedArrivalTime)) {
-			return false;
-		} else if (currentTime.isBefore(plannedLeaveTime)) {
-			return false;
-		}
-		// The journey is happening
 
 		String safeResponse = response.replaceAll("[/\\\\:*?\"<>|]", "");
 		Path baseDir = Paths.get(folderToStoreTo).toAbsolutePath().normalize();
@@ -79,6 +60,29 @@ public class MaterialChecker {
 		return true; // The material has a trip connected to it.
 	}
 
+	private boolean isTripCurrentlyHappening(Trip trip) {
+		if (trip.getTripStartTime().equals("UNKOWN") || trip.getTripEndTime().equals("UNKOWN")) {
+			return false;
+		}
+
+		LocalTime leaveTime = LocalTime.parse(trip.getTripStartTime());
+		LocalTime arrivalTime = LocalTime.parse(trip.getTripEndTime());
+
+		ZonedDateTime plannedLeaveTime = ZonedDateTime.of(LocalDate.now(), leaveTime, ZoneId.systemDefault());
+		ZonedDateTime plannedArrivalTime = ZonedDateTime.of(LocalDate.now(), arrivalTime, ZoneId.systemDefault());
+
+		ZonedDateTime currentTime = ZonedDateTime.now();
+
+		if (currentTime.isAfter(plannedArrivalTime)) {
+			return false;
+		} else if (currentTime.isBefore(plannedLeaveTime)) {
+			return false;
+		}
+
+		// The journey is happening
+		return true;
+	}
+
 	private Trip getTripInfo(int tripNumber) {
 		if (tripNumber < 1) {
 			System.out.println("Please give a valid tripNumber");
@@ -95,8 +99,9 @@ public class MaterialChecker {
 			return null;
 		}
 
-		if (response.equals("NOT FOUND")) { // HTTP CODE 404, means no trip was found for this tripNumber?.
-											// Shouldn't happen.
+		// HTTP CODE 404, means no trip was found for this tripNumber?
+		// Shouldn't happen.
+		if (response.equals("NOT FOUND")) {
 			return null;
 		}
 
@@ -104,6 +109,7 @@ public class MaterialChecker {
 
 		JSONObject jsonObject = null;
 
+		// IDK why this is try catch
 		try {
 			jsonObject = new JSONObject(jsonResponse);
 		} catch (@SuppressWarnings("unused") JSONException e) {
