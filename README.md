@@ -28,3 +28,4 @@ It tracks material numbers, journeys, arrivals, departures, and disruptions, log
 ## Requirements
 - Java 17 or later
 - [JSON.jar](https://repo1.maven.org/maven2/org/json/json/20250107/json-20250107-javadoc.jar)
+- NS API Key from the [Developer portal](https://apiportal.ns.nl/)
