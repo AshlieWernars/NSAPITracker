@@ -83,7 +83,7 @@ public class Main extends Canvas {
 			
 			g2d.drawString("Last time updated: " + Info.getLastTimeUpdated(), 525, 280);
 
-			drawActiveMaterial(g2d, Info.getActiveMaterial(), 300, 300, fm);
+			drawActiveMaterial(g2d, Info.getActiveMaterial(), 325, 300, fm);
 
 			bs.show();
 			g2d.dispose();

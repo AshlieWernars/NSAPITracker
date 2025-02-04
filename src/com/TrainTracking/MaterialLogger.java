@@ -24,12 +24,13 @@ public class MaterialLogger extends Thread {
 
 	// Pre-Defined Vars
 	private final int SECONDS_IN_MINUTES = 60;
+	private final int checkTime = 8;
 	private final ArrayList<Integer> materialNumbers = new ArrayList<>();
 	private final ArrayList<Integer> activeMaterialNumbers = new ArrayList<>();
 	private final String locationToStoreTo = "/home/ashlie/Desktop/";
 
 	// Vars
-	private int checkIntervalInMinutes = 15;
+	private int checkIntervalInMinutes = 10 - checkTime;
 	private int checkInterval = checkIntervalInMinutes * SECONDS_IN_MINUTES;
 	private boolean shouldRun = true;
 	private String folderToStoreTo;
