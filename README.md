@@ -29,3 +29,10 @@ It tracks material numbers, journeys, arrivals, departures, and disruptions, log
 - Java 17 or later
 - [JSON.jar](https://repo1.maven.org/maven2/org/json/json/20250107/json-20250107-javadoc.jar)
 - NS API Key from the [Developer portal](https://apiportal.ns.nl/)
+
+## To use:
+  - Clone the repo
+  - Import into Eclipse or your IDE
+  - In the same folder as src and res create a file 'config.properties', and make this the contents:
+    apiKey=YOUR_API_KEY_HERE
+  - The program will automatically save the tracking data in the res folder.
