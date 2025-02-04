@@ -9,11 +9,18 @@ import com.Info.Disruption;
 
 public class Info {
 
+	// Private Var's
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
+	private static final String saveFilePath = "res/";
+
 	private static ArrayList<Disruption> activeDisruptions;
 	private static ArrayList<Integer> activeMaterial;
 	private static int activeMaterialCounter = 0;
 	private static String lastTimeUpdated;
+
+	public static String getSavefilepath() {
+		return saveFilePath;
+	}
 
 	public static ArrayList<Disruption> getActiveDisruptionsList() {
 		return activeDisruptions;

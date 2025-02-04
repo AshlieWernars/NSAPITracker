@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.FileIO.FileCreator;
 import com.Info.Stop;
 import com.Info.Trip;
+import com.Main.Info;
 
 public class MaterialChecker {
 
@@ -95,7 +96,7 @@ public class MaterialChecker {
 		try {
 			jsonObject = new JSONObject(jsonResponse);
 		} catch (@SuppressWarnings("unused") JSONException e) {
-			FileCreator.createFile("/home/ashlie/Desktop/" + tripNumber + ".txt", jsonResponse);
+			FileCreator.createFile(Info.getSavefilepath() + tripNumber + ".txt", jsonResponse);
 		}
 
 		JSONArray stops = jsonObject.getJSONObject("payload").getJSONArray("stops");

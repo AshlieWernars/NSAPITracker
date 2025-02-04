@@ -3,9 +3,11 @@ package com.FileIO;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
+import com.Main.Info;
+
 public class CSVWriter {
 
-	private static final String filePath = "/home/ashlie/Desktop/DisruptionAI/disruptions.csv";
+	private static final String filePath = Info.getSavefilepath() + "disruptions.csv";
 
 	public static void writeToCSV(String[] rowData) {
 		try {
