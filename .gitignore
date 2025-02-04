@@ -33,3 +33,4 @@ replay_pid*
 *.key
 /bin/
 config.properties
+/res/Tracking
