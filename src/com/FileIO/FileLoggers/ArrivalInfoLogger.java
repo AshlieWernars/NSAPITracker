@@ -13,7 +13,13 @@ public class ArrivalInfoLogger {
 
 	public static void writeToFile(ArrivalInfo arrivalInfo) {
 		String tripNumber = arrivalInfo.getTrainNumber().replaceAll("[/\\\\:*?\"<>|]", "");
-		Path filePath = Paths.get(TrainLogger.getFoldertostore(), "Info", "arrivalInfo_" + tripNumber + ".txt");
+		Path baseDir = Paths.get(TrainLogger.getFoldertostore()).toAbsolutePath().normalize();
+		Path filePath = baseDir.resolve("Info").resolve("arrivalInfo_" + tripNumber + ".txt").normalize();
+
+		// Ensure the filePath is still inside baseDir
+		if (!filePath.startsWith(baseDir)) {
+		    throw new SecurityException("Invalid file path detected!");
+		}
 
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
 			writer.write("Origin: " + arrivalInfo.getOrigin());
