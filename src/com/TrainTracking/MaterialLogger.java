@@ -59,7 +59,7 @@ public class MaterialLogger extends Thread {
 	private void loadAllTrainNumbers() {
 		materialNumbers.clear();
 
-		try (BufferedReader reader = new BufferedReader(new FileReader("/home/ashlie/Desktop/Ashlie/Trains/alleTreinen.txt"))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(Info.getSavefilepath() + "alleTreinen.txt"))) {
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				materialNumbers.add(Integer.valueOf(line.trim()));
@@ -74,7 +74,7 @@ public class MaterialLogger extends Thread {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		currentDate = LocalDate.now().format(formatter);
 
-		folderToStoreTo = Info.getSavefilepath() + currentDate + "/MaterialTracking/";
+		folderToStoreTo = Info.getSavefilepath() + "Tracking/" + currentDate + "/MaterialTracking/";
 
 		FileCreator.ensureDirectoriesExist(folderToStoreTo + "/hello.txt");
 
