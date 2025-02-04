@@ -62,7 +62,13 @@ public class MaterialChecker {
 		// The journey is happening
 
 		String safeResponse = response.replaceAll("[/\\\\:*?\"<>|]", "");
-		Path filePath = Paths.get(folderToStoreTo, safeResponse + ".txt");
+		Path baseDir = Paths.get(folderToStoreTo).toAbsolutePath().normalize();
+		Path filePath = baseDir.resolve(safeResponse + ".txt").normalize();
+
+		// Ensure the filePath is still inside baseDir
+		if (!filePath.startsWith(baseDir)) {
+			throw new SecurityException("Invalid file path detected!");
+		}
 
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
 			writer.append(trip.getTripFileContents());
