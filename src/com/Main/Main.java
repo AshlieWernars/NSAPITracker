@@ -71,7 +71,7 @@ public class Main extends Canvas {
 
 			g2d.setColor(Color.white);
 
-			g2d.drawString(Logger.getCurrentTime(), 1200, 15);
+			g2d.drawString(Logger.getCurrentTime(), 1180, 15);
 
 			drawMultilineString(g2d, Info.getActiveDisruptions(), 0, 15, fm);
 
