@@ -18,7 +18,7 @@ public class ArrivalInfoLogger {
 
 		// Ensure the filePath is still inside baseDir
 		if (!filePath.startsWith(baseDir)) {
-		    throw new SecurityException("Invalid file path detected!");
+			throw new SecurityException("Invalid file path detected!");
 		}
 
 		try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
