@@ -84,7 +84,7 @@ public class TrainLogger extends Thread {
 				Thread.sleep(checkInterval * 1000L);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Error in MaterialLogger: " + e.getMessage(), e);
+			throw new RuntimeException("Error in TrainLogger: " + e.getMessage(), e);
 		}
 	}
 
