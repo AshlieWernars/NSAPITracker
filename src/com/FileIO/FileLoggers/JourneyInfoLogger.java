@@ -85,25 +85,11 @@ public class JourneyInfoLogger {
 		}
 
 		String delay = formatDuration(delayDuration);
-
-		delay = delay.equals("00:00:00") ? "" : " (" + delay + " Delay)";
-
-		return delay;
+		return delay.equals("00:00:00") ? "" : " (" + delay + " Delay)";
 	}
 
 	private static String getTripName(String tripNumber) {
-		if (tripNumber.startsWith("NS INT")) {
-			return tripNumber;
-		}
-
-		if (tripNumber.startsWith("Blauwnet")) {
-			return tripNumber;
-		}
-
-		if (tripNumber.startsWith("NS")) {
-			return tripNumber.replaceAll("  ", " ");
-		}
-		return tripNumber;
+		return tripNumber.startsWith("NS") ? tripNumber.replaceAll("  ", " ") : tripNumber;
 	}
 
 	// Utility function to format Duration into hh:mm:ss
