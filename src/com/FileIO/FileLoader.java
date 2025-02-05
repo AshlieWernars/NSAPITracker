@@ -20,17 +20,4 @@ public class FileLoader {
 		}
 		return lines.toArray(new String[0]);
 	}
-
-	public static String loadFileToString(String fileName) {
-		StringBuilder lines = new StringBuilder();
-		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
-			String line;
-			while ((line = bufferedReader.readLine()) != null) {
-				lines.append(line);
-			}
-		} catch (IOException e) {
-			System.out.println(e.getClass().getName() + ": " + e.getMessage());
-		}
-		return lines.toString();
-	}
 }

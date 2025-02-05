@@ -24,8 +24,8 @@ public class DepartureInfo {
 
 	private final List<Object> messagesList;
 
-	private final String departureStatus; // Replacing arrivalStatus with departureStatus
-	private final String routeStations; // Adding list of route stations
+	private final String departureStatus;
+	private final String routeStations;
 
 	public DepartureInfo(String direction, String trainNumber, String plannedDateTime, String actualDateTime, String plannedTrack, String actualTrack, String number, String categoryCode, String shortCategoryName, String longCategoryName, String operatorName, String operatorCode, String type, String trainCategory, boolean cancelled, List<Object> messagesList, String departureStatus, String routeStations) {
 		this.direction = direction;

@@ -46,7 +46,6 @@ public class Logger {
 	}
 
 	public static boolean doesFileExist(String path) {
-		File fileToCheck = new File(path);
-		return fileToCheck.exists();
+		return new File(path).exists();
 	}
 }
