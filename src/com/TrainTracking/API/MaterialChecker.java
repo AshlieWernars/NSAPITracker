@@ -61,7 +61,11 @@ public class MaterialChecker {
 	}
 
 	private boolean isTripCurrentlyHappening(Trip trip) {
-		if (trip.getTripStartTime().equals("UNKOWN") || trip.getTripEndTime().equals("UNKOWN")) {
+		if (trip.getTripStartTime() == null || trip.getTripStartTime().equals("UNKOWN")) {
+			return false;
+		}
+
+		if (trip.getTripEndTime() == null || trip.getTripEndTime().equals("UNKOWN")) {
 			return false;
 		}
 
