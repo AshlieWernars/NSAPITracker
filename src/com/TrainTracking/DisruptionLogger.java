@@ -1,5 +1,6 @@
 package com.TrainTracking;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -82,8 +83,8 @@ public class DisruptionLogger extends Thread {
 			}
 		}
 
-		disruption.sort(Comparator.comparingInt(Disruption::getID));
-		maintenance.sort(Comparator.comparingInt(Disruption::getID));
+		disruption.sort(Comparator.comparing(Disruption::getID));
+		maintenance.sort(Comparator.comparing(Disruption::getID));
 
 		toSort.clear();
 		toSort.addAll(maintenance);
@@ -166,7 +167,7 @@ public class DisruptionLogger extends Thread {
 	}
 
 	public static Disruption getDisruptionFromJson(JSONObject jsonObject, String ID) {
-		Integer id = null;
+		BigInteger id = null;
 		String[] stations = null;
 		String type = null;
 		String startDate = null;
@@ -176,11 +177,19 @@ public class DisruptionLogger extends Thread {
 		String cause = null;
 
 		try {
+			if(ID.contains("-")) {
+				ID = "7" + ID;
+			}
+			
+			// Extract digits and prepend "7"
 			String numericId = ID.replaceAll("\\D", "");
-			id = numericId.isEmpty() ? -1 : Integer.parseInt(numericId);
-		} catch (@SuppressWarnings("unused") Exception e) {
+			
+			// Convert to BigInteger
+			id = new BigInteger(numericId);
+		} catch (@SuppressWarnings("unused") NumberFormatException e) {
 			Logger.logErrorToFile("DisruptionLogger.java, Can't cast ID for disruption: " + ID);
-			id = -1;
+			System.err.println("DisruptionLogger.java, Can't cast ID for disruption: " + ID);
+			id = BigInteger.valueOf(-1);
 		}
 
 		try {

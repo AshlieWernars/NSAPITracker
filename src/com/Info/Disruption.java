@@ -1,8 +1,10 @@
 package com.Info;
 
+import java.math.BigInteger;
+
 public class Disruption {
 
-	private final int id;
+	private final BigInteger id;
 	private final String[] stations;
 	private final String type;
 	private String startDate;
@@ -13,7 +15,7 @@ public class Disruption {
 	private String actualEndTime;
 	private final String cause;
 
-	public Disruption(int id, String[] stations, String type, String startDate, String startTime, String expectedEndDate, String expectedEndTime, String actualEndDate, String actualEndTime, String cause) {
+	public Disruption(BigInteger id, String[] stations, String type, String startDate, String startTime, String expectedEndDate, String expectedEndTime, String actualEndDate, String actualEndTime, String cause) {
 		this.id = id;
 		this.stations = stations;
 		this.type = type;
@@ -46,7 +48,7 @@ public class Disruption {
 		return new String[] { startDate, startTime, station0, station1, station2, station3, station4, cause, expectedEndDate, expectedEndTime, actualEndDate, actualEndTime };
 	}
 
-	public int getID() {
+	public BigInteger getID() {
 		return id;
 	}
 
