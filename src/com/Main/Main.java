@@ -11,32 +11,30 @@ import java.util.ArrayList;
 
 import com.FileIO.FileLoggers.Logger;
 import com.TrainTracking.DisruptionLogger;
-import com.TrainTracking.MaterialLogger;
-import com.TrainTracking.TrainLogger;
 
 public class Main extends Canvas {
 
 	private static final long serialVersionUID = 1L;
 
 	// Classes
-	private final TrainLogger trainLogger;
-	private final MaterialLogger materialLogger;
+	// private final TrainLogger trainLogger;
+	// private final MaterialLogger materialLogger;
 	private final DisruptionLogger disruptionLogger;
 
 	@SuppressWarnings("unused")
 	public Main() {
-		trainLogger = new TrainLogger();
-		trainLogger.start();
+		// trainLogger = new TrainLogger();
+		// trainLogger.start();
 
-		materialLogger = new MaterialLogger();
-		materialLogger.start();
+		// materialLogger = new MaterialLogger();
+		// materialLogger.start();
 
 		disruptionLogger = new DisruptionLogger();
 		disruptionLogger.start();
 
-		new Display("NS API Tracker", this);
+		// new Display("NS API Tracker", this);
 
-		run();
+		// run();
 	}
 
 	public void run() {

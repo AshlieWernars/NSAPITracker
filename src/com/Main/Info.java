@@ -11,7 +11,7 @@ public class Info {
 
 	// Private Var's
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
-	private static final String saveFilePath = "res/";
+	private static final String saveFilePath = "/home/ashlie/Desktop/FUCKKKKKKK/";
 
 	private static ArrayList<Disruption> activeDisruptions;
 	private static ArrayList<Integer> activeMaterial;

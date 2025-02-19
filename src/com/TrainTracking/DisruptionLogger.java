@@ -5,10 +5,6 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,20 +19,8 @@ import com.TrainTracking.API.NSAPI;
 
 public class DisruptionLogger extends Thread {
 
-	// Pre-Defined Vars
-	private static final int SECONDS_IN_MINUTES = 60;
-	private static final HashMap<String, Disruption> trackedDisruptions = new HashMap<>();
-	private static final ArrayList<String> updatedDisruptions = new ArrayList<>();
-
-	// Vars
-	private static int checkIntervalInMinutes = 1;
-	private static int checkInterval = checkIntervalInMinutes * SECONDS_IN_MINUTES;
-	private boolean shouldRun = true;
-
 	public DisruptionLogger() {
 		FileCreator.ensureDirectoriesExist(Info.getSavefilepath() + "Disruptions/" + "hello.txt");
-
-		System.out.println("Checking for disruptions every: " + checkIntervalInMinutes + " Minute(s).");
 	}
 
 	@Override
@@ -58,44 +42,14 @@ public class DisruptionLogger extends Thread {
 	@Override
 	public void run() {
 		try {
-			while (shouldRun) {
-				checkForDisruptions();
-				Info.setActiveDisruptions(sortActiveDisruptions());
-				Thread.sleep(checkInterval * 1000L);
-			}
+			checkForDisruptions();
 		} catch (Exception e) {
 			throw new RuntimeException("Error in DisruptionLogger: " + e.getMessage(), e);
 		}
 	}
 
-	private ArrayList<Disruption> sortActiveDisruptions() {
-		ArrayList<Disruption> toSort = new ArrayList<>(trackedDisruptions.values());
-
-		List<Disruption> disruption = new ArrayList<>();
-		List<Disruption> maintenance = new ArrayList<>();
-
-		for (Disruption d : toSort) {
-			String id = String.valueOf(d.getID());
-			if (id.startsWith("6")) {
-				disruption.add(d);
-			} else if (id.startsWith("7")) {
-				maintenance.add(d);
-			}
-		}
-
-		disruption.sort(Comparator.comparing(Disruption::getID));
-		maintenance.sort(Comparator.comparing(Disruption::getID));
-
-		toSort.clear();
-		toSort.addAll(maintenance);
-		toSort.add(null);
-		toSort.addAll(disruption);
-
-		return toSort;
-	}
-
 	public void checkForDisruptions() {
-		String requestURL = "https://gateway.apiportal.ns.nl/disruptions/v3?isActive=true";
+		String requestURL = "https://gateway.apiportal.ns.nl/disruptions/v3?isActive=false";
 		String response = NSAPI.talkToAPI(requestURL);
 
 		if (response == null) {
@@ -108,53 +62,23 @@ public class DisruptionLogger extends Thread {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
+			boolean isActive = jsonObject.getBoolean("isActive");
+			
+			if (isActive == true) {
+				System.out.println("ACTIVE");
+				continue;
+			}
+
 			String id = getIDFromJSON(jsonObject);
 
-			if (trackedDisruptions.containsKey(id)) { // Already tracked disruption
-				Disruption disruption = getDisruptionFromJson(jsonObject, id);
-				trackedDisruptions.replace(id, disruption);
-				updatedDisruptions.add(id);
-			} else { // New disruption
-				Disruption disruption = getDisruptionFromJson(jsonObject, id);
-				trackedDisruptions.put(id, disruption);
-				String disruptionString = String.join(" ", disruption.toStringArray());
-				System.out.println("Disruption started. ID: " + id);
-				FileCreator.createFile(Info.getSavefilepath() + "Disruptions/" + id + ".txt", disruptionString);
-				updatedDisruptions.add(id);
-			}
-		}
-
-		Iterator<String> iterator = trackedDisruptions.keySet().iterator();
-		while (iterator.hasNext()) {
-			String id = iterator.next();
-
-			if (updatedDisruptions.contains(id)) {
-				continue; // Disruption still active
-			}
-
-			LocalDateTime now = LocalDateTime.now();
-
-			// Format for date
-			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			String date = now.format(dateFormatter);
-
-			// Format for time
-			DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-			String time = now.format(timeFormatter);
-
-			trackedDisruptions.get(id).setActualEndDate(date);
-			trackedDisruptions.get(id).setActualEndTime(time);
+			Disruption disruption = getDisruptionFromJson(jsonObject, id);
+			String disruptionString = String.join(" ", disruption.toStringArray());
+			System.out.println("Disruption found. ID: " + id);
+			FileCreator.createFile(Info.getSavefilepath() + "Disruptions/" + id + ".txt", disruptionString);
 
 			// Write to CSV
-			CSVWriter.writeToCSV(trackedDisruptions.get(id).toStringArray());
-
-			System.out.println("Disruption ended. ID: " + id);
-
-			// Remove from map
-			iterator.remove();
+			CSVWriter.writeToCSV(disruption.toStringArray());
 		}
-
-		updatedDisruptions.clear();
 	}
 
 	private static String getIDFromJSON(JSONObject jsonObject) {
@@ -177,13 +101,13 @@ public class DisruptionLogger extends Thread {
 		String cause = null;
 
 		try {
-			if(ID.contains("-")) {
+			if (ID.contains("-")) {
 				ID = "7" + ID;
 			}
-			
+
 			// Extract digits and prepend "7"
 			String numericId = ID.replaceAll("\\D", "");
-			
+
 			// Convert to BigInteger
 			id = new BigInteger(numericId);
 		} catch (@SuppressWarnings("unused") NumberFormatException e) {
